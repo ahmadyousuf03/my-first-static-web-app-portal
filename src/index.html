@@ -11,7 +11,38 @@
 <body>
   <main>
     <h1>Vanilla JavaScript App</h1>
+    
+    <div id="api-data">
+      <h2>Favorite Places</h2>
+      <ul id="places-list"></ul>
+    </div>
   </main>
+
+  <script>
+    async function fetchFavoritePlaces() {
+      try {
+        const response = await fetch('https://my-first-static-web-app-portal-nodejs.azurewebsites.net/api/favorite-places');
+        if (response.ok) {
+          const places = await response.json();
+          console.log(places);
+          const placesList = document.getElementById('places-list');
+          placesList.innerHTML = '';
+          places.forEach(place => {
+            const listItem = document.createElement('li');
+            listItem.textContent = `${place.name} - ${place.city}, ${place.state}`;
+            placesList.appendChild(listItem);
+          });
+        } else {
+          throw new Error('Failed to fetch data');
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        document.getElementById('api-data').innerHTML = '<p>Failed to load data. Please try again later.</p>';
+      }
+    }
+
+    window.onload = fetchFavoritePlaces;
+  </script>
 </body>
 
 </html>
