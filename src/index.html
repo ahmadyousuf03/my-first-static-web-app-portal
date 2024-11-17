@@ -27,9 +27,11 @@
           console.log(places);
           const placesList = document.getElementById('places-list');
           placesList.innerHTML = '';
+          
+          // Updated based on the correct JSON structure
           places.forEach(place => {
             const listItem = document.createElement('li');
-            listItem.textContent = `${place.name} - ${place.city}, ${place.state}`;
+            listItem.textContent = `${place.title} - Latitude: ${place.location.lat}, Longitude: ${place.location.lng}`;
             placesList.appendChild(listItem);
           });
         } else {
