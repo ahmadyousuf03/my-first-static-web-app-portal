@@ -13,27 +13,28 @@
     <h1>Vanilla JavaScript App</h1>
     
     <div id="api-data">
-      <h2>Favorite Places</h2>
+      <h2>Random Favorite Place</h2>
       <ul id="places-list"></ul>
+      <button id="new-place-btn">Get New Random Place</button>
     </div>
   </main>
 
   <script>
-    async function fetchFavoritePlaces() {
+    async function fetchFavoritePlace() {
       try {
         const response = await fetch('https://my-first-static-web-app-portal-nodejs.azurewebsites.net/api/favorite-places');
         if (response.ok) {
           const places = await response.json();
           console.log(places);
+          
+          const randomPlace = places[Math.floor(Math.random() * places.length)];
+          
           const placesList = document.getElementById('places-list');
           placesList.innerHTML = '';
-          
-          // Updated based on the correct JSON structure
-          places.forEach(place => {
-            const listItem = document.createElement('li');
-            listItem.textContent = `${place.title} - Latitude: ${place.location.lat}, Longitude: ${place.location.lng}`;
-            placesList.appendChild(listItem);
-          });
+
+          const listItem = document.createElement('li');
+          listItem.textContent = `${randomPlace.title} - Latitude: ${randomPlace.location.lat}, Longitude: ${randomPlace.location.lng}`;
+          placesList.appendChild(listItem);
         } else {
           throw new Error('Failed to fetch data');
         }
@@ -43,7 +44,9 @@
       }
     }
 
-    window.onload = fetchFavoritePlaces;
+    window.onload = fetchFavoritePlace;
+
+    document.getElementById('new-place-btn').addEventListener('click', fetchFavoritePlace);
   </script>
 </body>
 
